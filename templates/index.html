@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Deadlock Prevention & Strategy Simulator</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">OS</div>
+
+            <div>
+                <h2>Deadlock</h2>
+                <span>Simulator</span>
+            </div>
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-title">
+                SIMULATOR
+            </div>
+
+            <a href="#configuration" class="nav-item active">
+                <span>▣</span>
+                Configuration
+            </a>
+
+            <a href="#matrices" class="nav-item">
+                <span>▦</span>
+                Resource Matrices
+            </a>
+
+            <a href="#graph" class="nav-item">
+                <span>◇</span>
+                Allocation Graph
+            </a>
+
+            <a href="#result" class="nav-item">
+                <span>✓</span>
+                Simulation Result
+            </a>
+
+
+            <div class="nav-title strategy-title">
+                PREVENTION
+            </div>
+
+            <div class="strategy-info">
+                <div class="strategy-dot blue"></div>
+                <div>
+                    <strong>Hold-and-Wait</strong>
+                    <small>Prevent partial allocation</small>
+                </div>
+            </div>
+
+            <div class="strategy-info">
+                <div class="strategy-dot orange"></div>
+                <div>
+                    <strong>No Preemption</strong>
+                    <small>Control resource release</small>
+                </div>
+            </div>
+
+            <div class="strategy-info">
+                <div class="strategy-dot green"></div>
+                <div>
+                    <strong>Circular Wait</strong>
+                    <small>Enforce resource ordering</small>
+                </div>
+            </div>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+            <div class="system-status">
+                <span class="status-indicator"></span>
+                System Ready
+            </div>
+
+            <small>
+                Operating Systems Project
+            </small>
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div>
+                <div class="breadcrumb">
+                    Operating Systems / Deadlock
+                </div>
+
+                <h1>
+                    Deadlock Prevention & Strategy Simulator
+                </h1>
+
+                <p>
+                    Simulate resource allocation and apply operating system
+                    deadlock prevention techniques.
+                </p>
+            </div>
+
+
+            <div class="top-status">
+                <span class="status-indicator"></span>
+                Simulator Online
+            </div>
+
+        </header>
+
+
+        <!-- ================= CONFIGURATION ================= -->
+
+        <section class="dashboard-card" id="configuration">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="section-number">01</span>
+
+                    <div class="section-title">
+                        <h2>System Configuration</h2>
+
+                        <p>
+                            Define the number of processes and resources
+                            used in the simulation.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="configuration-grid">
+
+                <div class="config-box">
+
+                    <div class="config-icon process-icon">
+                        P
+                    </div>
+
+                    <div class="config-content">
+
+                        <label for="processCount">
+                            Number of Processes
+                        </label>
+
+                        <input
+                            type="number"
+                            id="processCount"
+                            value="3"
+                            min="1"
+                            max="10"
+                        >
+
+                        <small>
+                            Example: P1, P2, P3
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="config-box">
+
+                    <div class="config-icon resource-icon">
+                        R
+                    </div>
+
+                    <div class="config-content">
+
+                        <label for="resourceCount">
+                            Number of Resources
+                        </label>
+
+                        <input
+                            type="number"
+                            id="resourceCount"
+                            value="3"
+                            min="1"
+                            max="10"
+                        >
+
+                        <small>
+                            Example: R1, R2, R3
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="primary-button"
+                onclick="generateTables()">
+
+                Generate Resource Tables
+                <span>→</span>
+
+            </button>
+
+        </section>
+
+
+        <!-- ================= MATRICES ================= -->
+
+        <section class="matrices-grid" id="matrices">
+
+
+            <!-- ALLOCATION -->
+
+            <div class="dashboard-card matrix-card">
+
+                <div class="matrix-header">
+
+                    <div>
+
+                        <span class="matrix-icon allocation-icon">
+                            A
+                        </span>
+
+                        <div>
+                            <h2>Allocation Matrix</h2>
+
+                            <p>
+                                Resources currently allocated
+                                to each process.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="allocationTable"
+                    class="table-container">
+
+                </div>
+
+            </div>
+
+
+            <!-- REQUEST -->
+
+            <div class="dashboard-card matrix-card">
+
+                <div class="matrix-header">
+
+                    <div>
+
+                        <span class="matrix-icon request-icon">
+                            R
+                        </span>
+
+                        <div>
+                            <h2>Request Matrix</h2>
+
+                            <p>
+                                Resources requested
+                                by each process.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="requestTable"
+                    class="table-container">
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= AVAILABLE RESOURCES ================= -->
+
+        <section class="dashboard-card">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-number">02</span>
+
+                    <div class="section-title">
+
+                        <h2>Available Resources</h2>
+
+                        <p>
+                            Number of currently available instances
+                            of each resource.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="availableTable"
+                class="available-grid">
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= STRATEGY ================= -->
+
+        <section class="dashboard-card strategy-card">
+
+            <div class="strategy-layout">
+
+                <div class="strategy-description">
+
+                    <span class="section-number">03</span>
+
+                    <h2>
+                        Select Prevention Strategy
+                    </h2>
+
+                    <p>
+                        Choose the deadlock prevention technique
+                        that should be applied to the current
+                        resource allocation scenario.
+                    </p>
+
+                </div>
+
+
+                <div class="strategy-control">
+
+                    <label for="strategy">
+                        Prevention Technique
+                    </label>
+
+                    <select id="strategy">
+
+                        <option value="hold_wait">
+                            Hold-and-Wait Prevention
+                        </option>
+
+                        <option value="no_preemption">
+                            No Preemption
+                        </option>
+
+                        <option value="circular_wait">
+                            Circular-Wait Prevention
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="simulate-button"
+                onclick="simulate()">
+
+                <span class="play-icon">▶</span>
+
+                Run Deadlock Simulation
+
+            </button>
+
+        </section>
+
+
+        <!-- ================= GRAPH ================= -->
+
+        <section
+            class="dashboard-card graph-card"
+            id="graph">
+
+            <div class="section-heading graph-heading">
+
+                <div>
+
+                    <span class="section-number">04</span>
+
+                    <div class="section-title">
+
+                        <h2>
+                            Resource Allocation Graph
+                        </h2>
+
+                        <p>
+                            Visual representation of resource
+                            allocation and resource requests.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="graph-status">
+                    LIVE GRAPH
+                </div>
+
+            </div>
+
+
+            <div id="allocationGraph">
+
+                <p class="graph-placeholder">
+                    Generate the tables and run a simulation
+                    to visualize the resource allocation graph.
+                </p>
+
+            </div>
+
+
+            <!-- GRAPH LEGEND -->
+
+            <div class="graph-legend">
+
+                <div class="legend-item">
+
+                    <span class="legend-process">
+                        P
+                    </span>
+
+                    <span>Process</span>
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span class="legend-resource">
+                        R
+                    </span>
+
+                    <span>Resource</span>
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span class="legend-allocation"></span>
+
+                    <span>Allocated</span>
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span class="legend-request"></span>
+
+                    <span>Requested</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= RESULT ================= -->
+
+        <section
+            class="dashboard-card result-card"
+            id="result">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-number">05</span>
+
+                    <div class="section-title">
+
+                        <h2>
+                            Simulation Result
+                        </h2>
+
+                        <p>
+                            Results produced by the selected
+                            prevention strategy.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="result-placeholder">
+
+                <div class="result-icon">
+                    ✓
+                </div>
+
+                <h3>
+                    Waiting for simulation
+                </h3>
+
+                <p>
+                    Configure the resources above and click
+                    <strong>Run Deadlock Simulation</strong>
+                    to see the result.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <footer>
+
+            <div>
+                Deadlock Prevention & Strategy Simulator
+            </div>
+
+            <div>
+                Operating Systems • Resource Management
+            </div>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<!-- JAVASCRIPT -->
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>
