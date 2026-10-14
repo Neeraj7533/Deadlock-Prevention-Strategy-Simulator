@@ -1,144 +1,82 @@
-\# Deadlock Prevention \& Strategy Simulator
+Deadlock Prevention \& Strategy Simulator
 
 
 
 A web-based simulator designed to demonstrate and visualize Operating System deadlock prevention techniques.
 
-
-
-\## 📌 Project Overview
-
-
+📌 Project Overview
 
 The Deadlock Prevention \& Strategy Simulator helps users understand how different deadlock prevention strategies work by providing resource allocation data and visualizing the relationships between processes and resources.
 
-
-
 The simulator supports three major deadlock prevention techniques:
 
+- Hold-and-Wait Prevention
+- No Preemption Prevention
+- Circular Wait Prevention
 
 
-\- Hold-and-Wait Prevention
+🎯 Objectives
 
-\- No Preemption Prevention
+- Understand the concept of deadlocks in Operating Systems.
+- Demonstrate different deadlock prevention techniques.
+- Visualize resource allocation using a Resource Allocation Graph.
+- Represent allocation and resource requests using matrices.
+- Detect potential deadlock situations.
+- Store simulation results for future reference.
 
-\- Circular Wait Prevention
+⚙️ Features
 
+- Process and resource configuration
+- Allocation Matrix
+- Request Matrix
+- Available Resource representation
+- Resource Allocation Graph (RAG)
+- Deadlock detection
+- Hold-and-Wait prevention
+- No Preemption prevention
+- Circular Wait prevention
+- Simulation result display
+- Simulation history using SQLite
 
+🧠 Deadlock Prevention Strategies
 
-\## 🎯 Objectives
-
-
-
-\- Understand the concept of deadlocks in Operating Systems.
-
-\- Demonstrate different deadlock prevention techniques.
-
-\- Visualize resource allocation using a Resource Allocation Graph.
-
-\- Represent allocation and resource requests using matrices.
-
-\- Detect potential deadlock situations.
-
-\- Store simulation results for future reference.
-
-
-
-\## ⚙️ Features
-
-
-
-\- Process and resource configuration
-
-\- Allocation Matrix
-
-\- Request Matrix
-
-\- Available Resource representation
-
-\- Resource Allocation Graph (RAG)
-
-\- Deadlock detection
-
-\- Hold-and-Wait prevention
-
-\- No Preemption prevention
-
-\- Circular Wait prevention
-
-\- Simulation result display
-
-\- Simulation history using SQLite
-
-
-
-\## 🧠 Deadlock Prevention Strategies
-
-
-
-\### 1. Hold-and-Wait
-
-
+1. Hold-and-Wait
 
 Prevents a process from holding allocated resources while waiting for additional resources.
 
-
-
-\### 2. No Preemption
-
-
+2. No Preemption
 
 Allows resources to be taken back from a process under appropriate conditions to prevent deadlock.
 
-
-
-\### 3. Circular Wait
-
-
+3. Circular Wait
 
 Prevents circular waiting by enforcing an ordering on resource acquisition.
 
 
+📊 Resource Allocation Graph
 
-\## 📊 Resource Allocation Graph
+The simulator uses a Resource Allocation Graph to visualize resource relationships
 
+-Resource → Process 
+represents an allocated resource.
 
+-Process → Resource
+represents a requested resource.
 
-The simulator uses a Resource Allocation Graph to visualize resource relationships.
-
-
-
-\- \*\*Resource → Process\*\* represents an allocated resource.
-
-\- \*\*Process → Resource\*\* represents a requested resource.
-
-\- Resource nodes display the number of available instances.
+- Resource nodes display the number of available instances.
 
 
 
-\## 🛠️ Technologies Used
+🛠️ Technologies Used
 
+- Python
+- Flask
+- HTML
+- CSS
+- JavaScript
+- SQLite
 
-
-\- Python
-
-\- Flask
-
-\- HTML
-
-\- CSS
-
-\- JavaScript
-
-\- SQLite
-
-
-
-\## 📁 Project Structure
-
-
-
-```text
+📁 Project Structure: 
 
 Deadlock\_Prevention\_Simulator/
 
