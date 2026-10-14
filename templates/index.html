@@ -229,6 +229,85 @@
         </section>
 
 
+        <!-- ================= DEADLOCK CONDITIONS ================= -->
+
+        <section class="dashboard-card theory-card" id="deadlock-theory">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="section-number">02</span>
+
+                    <div class="section-title">
+                        <h2>Deadlock Conditions</h2>
+                        <p>
+                            The four necessary conditions that can lead to deadlock.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="theory-grid">
+
+                <div class="theory-item">
+                    <div class="theory-number">1</div>
+                    <div>
+                        <h3>Mutual Exclusion</h3>
+                        <p>
+                            A resource instance can be used by only one process at a time.
+                            If it is allocated to one process, another process must wait
+                            until it is released.
+                        </p>
+                        <strong>Example:</strong>
+                        <span>R1 → P1 means that instance of R1 is unavailable to P2.</span>
+                    </div>
+                </div>
+
+                <div class="theory-item">
+                    <div class="theory-number">2</div>
+                    <div>
+                        <h3>Hold and Wait</h3>
+                        <p>
+                            A process holds one or more resources while waiting for
+                            additional resources.
+                        </p>
+                        <strong>Example:</strong>
+                        <span>P1 holds R1 and waits for R2.</span>
+                    </div>
+                </div>
+
+                <div class="theory-item">
+                    <div class="theory-number">3</div>
+                    <div>
+                        <h3>No Preemption</h3>
+                        <p>
+                            A resource normally cannot be forcibly taken from the
+                            process holding it; it is released by that process.
+                        </p>
+                        <strong>Example:</strong>
+                        <span>P1 holds R1 and another process cannot simply take it.</span>
+                    </div>
+                </div>
+
+                <div class="theory-item">
+                    <div class="theory-number">4</div>
+                    <div>
+                        <h3>Circular Wait</h3>
+                        <p>
+                            Processes form a cycle in which each process waits for a
+                            resource held by another process in the cycle.
+                        </p>
+                        <strong>Example:</strong>
+                        <span>P1 waits for R2 while P2 holds R2, and P2 waits for R1.</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
         <!-- ================= MATRICES ================= -->
 
         <section class="matrices-grid" id="matrices">
@@ -314,7 +393,7 @@
 
                 <div>
 
-                    <span class="section-number">02</span>
+                    <span class="section-number">03</span>
 
                     <div class="section-title">
 
@@ -349,7 +428,7 @@
 
                 <div class="strategy-description">
 
-                    <span class="section-number">03</span>
+                    <span class="section-number">04</span>
 
                     <h2>
                         Select Prevention Strategy
@@ -370,7 +449,7 @@
                         Prevention Technique
                     </label>
 
-                    <select id="strategy">
+                    <select id="strategy" onchange="updateTimeoutVisibility()">
 
                         <option value="hold_wait">
                             Hold-and-Wait Prevention
@@ -385,6 +464,32 @@
                         </option>
 
                     </select>
+
+                    <div id="holdWaitModeControl" class="timeout-control">
+
+                        <label for="holdWaitMode">
+                            Hold-and-Wait Method
+                        </label>
+
+                        <select id="holdWaitMode" onchange="updateHoldWaitModeVisibility()">
+                            <option value="timeout">Wait Timeout</option>
+                            <option value="simultaneous">Simultaneous Allocation</option>
+                        </select>
+
+                        <div id="timeoutSettings">
+                            <label for="waitTimeout">
+                                Maximum Wait Timeout (seconds)
+                            </label>
+
+                            <input type="number" id="waitTimeout" value="5" min="1" max="3600">
+                            <small>If the complete request is not granted within this limit, the process releases all held resources and exits.</small>
+                        </div>
+
+                        <div id="simultaneousInfo" style="display:none;">
+                            <small>Processes requesting resources at the same time are treated as one group. If the complete group can be satisfied, all requests are allocated together; otherwise, no partial allocation is made.</small>
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -414,7 +519,7 @@
 
                 <div>
 
-                    <span class="section-number">04</span>
+                    <span class="section-number">05</span>
 
                     <div class="section-title">
 
@@ -507,7 +612,7 @@
 
                 <div>
 
-                    <span class="section-number">05</span>
+                    <span class="section-number">06</span>
 
                     <div class="section-title">
 

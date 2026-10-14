@@ -34,6 +34,13 @@ def simulate():
     allocation = data.get("allocation")
     request_matrix = data.get("request")
     available = data.get("available")
+    wait_timeout = data.get("wait_timeout", 5)
+    hold_wait_mode = data.get("hold_wait_mode", "timeout")
+
+    try:
+        wait_timeout = max(1, int(wait_timeout))
+    except (TypeError, ValueError):
+        wait_timeout = 5
 
 
     # ==========================================
@@ -56,7 +63,9 @@ def simulate():
         result = prevent_hold_and_wait(
             allocation,
             request_matrix,
-            available
+            available,
+            wait_timeout,
+            hold_wait_mode
         )
 
 
@@ -91,6 +100,9 @@ def simulate():
     # ==========================================
 
     result["deadlock_detection"] = deadlock_result
+    result["initial_allocation"] = allocation
+    result["initial_request"] = request_matrix
+    result["initial_available"] = available
 
 
     # ==========================================

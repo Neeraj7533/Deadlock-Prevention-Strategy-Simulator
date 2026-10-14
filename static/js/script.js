@@ -363,6 +363,18 @@ async function simulate() {
     const available =
         readAvailableResources();
 
+    const waitTimeoutInput =
+        document.getElementById("waitTimeout");
+
+    const waitTimeout =
+        Math.max(
+            1,
+            parseInt(waitTimeoutInput?.value) || 5
+        );
+
+    const holdWaitMode =
+        document.getElementById("holdWaitMode")?.value || "timeout";
+
 
     currentAllocation = allocation;
     currentRequest = request;
@@ -421,7 +433,11 @@ async function simulate() {
 
                 request: request,
 
-                available: available
+                available: available,
+
+                wait_timeout: waitTimeout,
+
+                hold_wait_mode: holdWaitMode
 
             })
 
@@ -696,6 +712,20 @@ function displayResult(result) {
 
 
     // ========================================================
+    // WAIT TIMEOUT
+    // ========================================================
+
+    if (result.strategy === "Hold-and-Wait Prevention") {
+        if (result.mode === "timeout" && result.wait_timeout) {
+            html += `<div class="timeout-summary"><strong>Hold-and-Wait method: Wait Timeout</strong><br>Maximum wait: ${escapeHtml(result.wait_timeout)} seconds. If the complete request is not granted, the process releases its held resources and exits.</div>`;
+        }
+        if (result.mode === "simultaneous") {
+            html += `<div class="timeout-summary"><strong>Hold-and-Wait method: Simultaneous Allocation</strong><br>Requests in the same batch are allocated together only when the complete group can be satisfied. No partial allocation is made.</div>`;
+        }
+    }
+
+
+    // ========================================================
     // ACTIONS
     // ========================================================
 
@@ -736,6 +766,99 @@ function displayResult(result) {
             }
         );
 
+
+        html += `
+
+                </div>
+
+            </div>
+
+        `;
+    }
+
+
+    // ========================================================
+    // DETAILED PROCESS-BY-PROCESS EXECUTION
+    // ========================================================
+
+    if (Array.isArray(result.process_steps)) {
+
+        html += `
+
+            <div class="result-section">
+
+                <h3>
+                    Detailed Process Execution
+                </h3>
+
+                <p class="result-section-description">
+                    Each step below is generated from the entered
+                    Allocation, Request, and Available matrices.
+                </p>
+
+                <div class="process-step-list">
+
+        `;
+
+        result.process_steps.forEach((step) => {
+
+            const statusClass =
+                String(step.status || "")
+                    .toLowerCase()
+                    .includes("granted")
+                    ? "step-granted"
+                    : String(step.status || "")
+                        .toLowerCase()
+                        .includes("reject")
+                        || String(step.status || "")
+                            .toLowerCase()
+                            .includes("timeout")
+                        ? "step-rejected"
+                        : String(step.status || "")
+                            .toLowerCase()
+                            .includes("preempt")
+                        ? "step-preempted"
+                        : "step-neutral";
+
+            html += `
+
+                <div class="process-step-card">
+
+                    <div class="process-step-header">
+
+                        <strong>
+                            ${escapeHtml(step.process)}
+                        </strong>
+
+                        <span class="step-status ${statusClass}">
+                            ${escapeHtml(step.status || "PROCESSED")}
+                        </span>
+
+                    </div>
+
+                    <ol class="process-step-details">
+
+            `;
+
+            (step.details || []).forEach(detail => {
+
+                html += `
+                    <li>
+                        ${escapeHtml(detail)}
+                    </li>
+                `;
+
+            });
+
+            html += `
+
+                    </ol>
+
+                </div>
+
+            `;
+
+        });
 
         html += `
 
@@ -1577,6 +1700,27 @@ function drawGraph() {
 
 
 // ============================================================
+// HOLD-AND-WAIT TIMEOUT VISIBILITY
+// ============================================================
+
+function updateTimeoutVisibility() {
+    const strategy = document.getElementById("strategy")?.value;
+    const holdWaitControl = document.getElementById("holdWaitModeControl");
+    if (!holdWaitControl) return;
+    holdWaitControl.style.display = strategy === "hold_wait" ? "block" : "none";
+    updateHoldWaitModeVisibility();
+}
+
+function updateHoldWaitModeVisibility() {
+    const mode = document.getElementById("holdWaitMode")?.value || "timeout";
+    const timeoutSettings = document.getElementById("timeoutSettings");
+    const simultaneousInfo = document.getElementById("simultaneousInfo");
+    if (timeoutSettings) timeoutSettings.style.display = mode === "timeout" ? "block" : "none";
+    if (simultaneousInfo) simultaneousInfo.style.display = mode === "simultaneous" ? "block" : "none";
+}
+
+
+// ============================================================
 // PAGE LOAD
 // ============================================================
 
@@ -1588,6 +1732,7 @@ document.addEventListener(
         // The HTML button calls generateTables().
 
         drawGraph();
+        updateTimeoutVisibility();
 
     }
 );
