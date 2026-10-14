@@ -1879,11 +1879,22 @@ footer {
 
 .theory-item {
     display: flex;
+    align-items: flex-start;
     gap: 14px;
+    min-width: 0;
     padding: 18px;
     border: 1px solid var(--border);
     border-radius: 12px;
     background: #f8fafc;
+}
+
+.theory-item > div:last-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.theory-item p {
+    overflow-wrap: anywhere;
 }
 
 .theory-number {
@@ -1907,13 +1918,13 @@ footer {
 .theory-item p {
     margin: 0 0 7px;
     color: var(--muted);
-    font-size: 11px;
-    line-height: 1.55;
+    font-size: 13px;
+    line-height: 1.65;
 }
 
 .theory-item strong,
 .theory-item span {
-    font-size: 11px;
+    font-size: 12px;
     color: #475569;
 }
 
@@ -2056,4 +2067,60 @@ footer {
         align-items: flex-start;
         flex-direction: column;
     }
+}
+
+
+/* =========================================================
+   DEADLOCK THEORY SECTION
+========================================================= */
+.theory-intro {
+    padding: 16px 18px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--primary);
+    border-radius: 8px;
+    background: var(--primary-soft);
+    line-height: 1.75;
+    color: var(--text);
+}
+
+.theory-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.theory-item {
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+}
+
+.theory-label {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    color: var(--primary);
+}
+
+.theory-item h3 {
+    margin: 0 0 12px;
+    font-size: 18px;
+}
+
+.theory-item p {
+    margin: 0 0 11px;
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--text-muted, var(--text));
+}
+
+.theory-item p:last-child { margin-bottom: 0; }
+.theory-item strong { color: var(--text); }
+
+@media (max-width: 900px) {
+    .theory-grid { grid-template-columns: 1fr; }
 }
