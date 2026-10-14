@@ -55,6 +55,12 @@
                 Simulation Result
             </a>
 
+            <a href="#theory" class="nav-item">
+                <span>▤</span>
+                Deadlock Theory
+            </a>
+
+
 
             <div class="nav-title strategy-title">
                 PREVENTION
@@ -241,39 +247,38 @@
                     <div class="section-title">
                         <h2>Deadlock Conditions</h2>
                         <p>
-                            The four necessary conditions that can lead to deadlock.
+                            Meaning, examples, and prevention strategies for the four necessary conditions of deadlock.
                         </p>
                     </div>
                 </div>
 
             </div>
 
-            <div class="theory-grid">
+            <div class="theory-grid theory-grid-detailed">
 
                 <div class="theory-item">
                     <div class="theory-number">1</div>
                     <div>
                         <h3>Mutual Exclusion</h3>
-                        <p>
-                            A resource instance can be used by only one process at a time.
-                            If it is allocated to one process, another process must wait
-                            until it is released.
-                        </p>
+                        <strong>Meaning:</strong>
+                        <p>A resource can be used by only one process at a time. If another process requests the same resource, it must wait until the resource becomes available.</p>
                         <strong>Example:</strong>
-                        <span>R1 → P1 means that instance of R1 is unavailable to P2.</span>
+                        <p>A printer generally handles one printing job at a time.</p>
+                        <strong>Prevention Strategy:</strong>
+                        <p>Mutual exclusion can be removed only when a resource can safely be made shareable. However, some resources—especially certain hardware devices such as a printer executing a print job—are inherently non-shareable. Making these resources shareable may require changes to their hardware design or operating mechanism, which is not always technically feasible. Therefore, mutual exclusion cannot be eliminated for every resource in practice.</p>
                     </div>
                 </div>
 
                 <div class="theory-item">
                     <div class="theory-number">2</div>
                     <div>
-                        <h3>Hold and Wait</h3>
-                        <p>
-                            A process holds one or more resources while waiting for
-                            additional resources.
-                        </p>
+                        <h3>Hold-and-Wait</h3>
+                        <strong>Meaning:</strong>
+                        <p>Hold-and-wait occurs when a process holds one or more resources while waiting for additional resources held by other processes.</p>
                         <strong>Example:</strong>
-                        <span>P1 holds R1 and waits for R2.</span>
+                        <p>Process P1 holds a printer and waits for a scanner that is currently held by another process.</p>
+                        <strong>Prevention Strategy:</strong>
+                        <p>Require processes to request all necessary resources before execution or release currently held resources before requesting additional ones. A waiting-time limit can also be used as an additional policy, requiring a process to release its resources and exit or restart if its waiting limit is exceeded.</p>
                     </div>
                 </div>
 
@@ -281,12 +286,12 @@
                     <div class="theory-number">3</div>
                     <div>
                         <h3>No Preemption</h3>
-                        <p>
-                            A resource normally cannot be forcibly taken from the
-                            process holding it; it is released by that process.
-                        </p>
+                        <strong>Meaning:</strong>
+                        <p>No preemption means that a resource cannot normally be forcibly taken away from a process. The process must release the resource voluntarily after completing its work.</p>
                         <strong>Example:</strong>
-                        <span>P1 holds R1 and another process cannot simply take it.</span>
+                        <p>A process holds a resource while waiting for another resource, and the operating system cannot reclaim the held resource under the current rules.</p>
+                        <strong>Prevention Strategy:</strong>
+                        <p>Permit resource preemption under suitable conditions. If a process cannot obtain a requested resource, it may be required to release its held resources and retry later. This approach is suitable only when the resource state can be safely preserved or restored.</p>
                     </div>
                 </div>
 
@@ -294,12 +299,12 @@
                     <div class="theory-number">4</div>
                     <div>
                         <h3>Circular Wait</h3>
-                        <p>
-                            Processes form a cycle in which each process waits for a
-                            resource held by another process in the cycle.
-                        </p>
+                        <strong>Meaning:</strong>
+                        <p>Circular wait occurs when a group of processes forms a circular chain in which each process waits for a resource held by the next process.</p>
                         <strong>Example:</strong>
-                        <span>P1 waits for R2 while P2 holds R2, and P2 waits for R1.</span>
+                        <p>P1 waits for a resource held by P2, P2 waits for a resource held by P3, and P3 waits for a resource held by P1.</p>
+                        <strong>Prevention Strategy:</strong>
+                        <p>Assign a fixed ordering to resource types and require processes to request resources according to that order. This prevents circular resource dependencies.</p>
                     </div>
                 </div>
 
@@ -650,6 +655,59 @@
 
             </div>
 
+        </section>
+
+
+        <!-- ================= DEADLOCK THEORY ================= -->
+
+        <section class="dashboard-card theory-card" id="theory">
+            <div class="section-heading">
+                <div>
+                    <span class="section-number">07</span>
+                    <div class="section-title">
+                        <h2>Deadlock Theory & Prevention Strategies</h2>
+                        <p>The four necessary conditions for deadlock and the strategy used to prevent each one.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theory-intro">
+                A deadlock occurs when two or more processes wait indefinitely for resources held by one another. Deadlock prevention aims to ensure that at least one of the four necessary conditions cannot hold, so the system avoids entering a deadlock state.
+            </div>
+
+            <div class="theory-grid">
+                <article class="theory-item">
+                    <span class="theory-label">CONDITION 01</span>
+                    <h3>Mutual Exclusion</h3>
+                    <p><strong>What it is:</strong> A resource can be used by only one process at a time. Other processes requesting that resource must wait until it becomes available.</p>
+                    <p><strong>Example:</strong> A printer generally handles one printing job at a time.</p>
+                    <p><strong>Prevention strategy:</strong> Make resources shareable wherever possible. However, mutual exclusion cannot be removed for inherently non-shareable resources, such as a printer performing a particular job, so this condition cannot always be eliminated in practice.</p>
+                </article>
+
+                <article class="theory-item">
+                    <span class="theory-label">CONDITION 02</span>
+                    <h3>Hold-and-Wait</h3>
+                    <p><strong>What it is:</strong> A process holds one or more resources while waiting to acquire additional resources that are held by other processes.</p>
+                    <p><strong>Example:</strong> P1 holds a printer and waits for a scanner currently held by another process.</p>
+                    <p><strong>Prevention strategy:</strong> Require a process to request all needed resources before it begins, or make it release held resources before requesting more. A system may also apply a waiting-time limit and require a process to release resources and exit or restart if that limit is exceeded.</p>
+                </article>
+
+                <article class="theory-item">
+                    <span class="theory-label">CONDITION 03</span>
+                    <h3>No Preemption</h3>
+                    <p><strong>What it is:</strong> Resources cannot normally be forcibly taken from a process; the process releases them voluntarily after finishing its work.</p>
+                    <p><strong>Example:</strong> A process keeps a resource while waiting for another resource, and the current rules do not allow the held resource to be reclaimed.</p>
+                    <p><strong>Prevention strategy:</strong> Allow safe preemption when appropriate. If a process cannot obtain a requested resource, it may need to release its held resources and retry later. This works only when the resource state can be safely preserved or restored.</p>
+                </article>
+
+                <article class="theory-item">
+                    <span class="theory-label">CONDITION 04</span>
+                    <h3>Circular Wait</h3>
+                    <p><strong>What it is:</strong> Processes form a circular chain where each process waits for a resource held by the next process.</p>
+                    <p><strong>Example:</strong> P1 waits for a resource held by P2, while P2 waits for a resource held by P1.</p>
+                    <p><strong>Prevention strategy:</strong> Assign a fixed ordering to resource types and require processes to request resources according to that order. This prevents circular resource dependencies.</p>
+                </article>
+            </div>
         </section>
 
 
